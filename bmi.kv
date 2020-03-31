@@ -1,0 +1,146 @@
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+
+<MyTextInput@MDTextField>:
+    multiline: False
+    size_hint_y: .3
+    input_type: "number"
+
+<ContentNavigationDrawer>:
+    BoxLayout:
+        orientation: "vertical"
+
+        FloatLayout:
+            size_hint_y: None
+            height: "200dp"
+
+            canvas:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            BoxLayout:
+                id: _top_box
+                size_hint_y: None
+                height: "200dp"
+                #padding: "10dp"
+                x: root.parent.x
+                pos_hint: {"top": 1}
+
+#                FitImage:
+                Image:
+                    source: "data/images/bmi.png"
+
+            MDIconButton:
+                icon: "close"
+                x: root.parent.x + dp(10)
+                pos_hint: {"top": 1}
+                on_release: root.parent.toggle_nav_drawer()
+
+        MDLabel:
+            canvas.before:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            markup: True
+            text: "[b]Индекс массы тела[/b]\nВерсия: 0.0.1 бета"
+#            x: root.parent.x + dp(10)
+#            y: root.height - top_box.height + dp(10)
+            padding: 7, 0
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        ScrollView:
+            pos_hint: {"top": 1}
+
+            GridLayout:
+                id: _box_item
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+                OneLineIconListItem:
+                    text: "Приветствия"
+                    on_release: app.greetings()
+                    IconLeftWidget:
+                        icon: "human-greeting"
+                        on_release: app.greetings()
+
+                OneLineIconListItem:
+                    text: "Об авторе"
+                    on_release: app.about_author()
+                    IconLeftWidget:
+                        icon: "account"
+                        on_release: app.about_author()
+
+                OneLineIconListItem:
+                    text: "Выход"
+                    on_release: app.stop()
+                    IconLeftWidget:
+                        icon: "exit-to-app"
+                        on_release: app.stop()
+
+#Screen:
+<MainScreen>:
+    ti_height: _ti_height
+    ti_weight: _ti_weight
+    lbl_bmi: _lbl_bmi
+    NavigationLayout:
+
+        ScreenManager:
+
+            Screen:
+
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        title: "Индекс массы тела"
+                        md_bg_color: app.theme_cls.primary_color
+                        elevation: 10
+                        right_action_items:
+                            [["dots-vertical", lambda x: MDDropdownMenu(items=app.menu_items, width_mult=5).open(self)]]
+                        left_action_items:
+                            [["menu", lambda x: _nav_drawer.toggle_nav_drawer()]]
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        padding: dp(15)
+                        spacing: "5dp"
+
+                        MyTextInput:
+                            id: _ti_height
+                            hint_text: "Рост в см"
+                            input_filter: "int"
+                            font_size: "40dp"
+
+                        MyTextInput:
+                            id: _ti_weight
+                            hint_text: "Масса в кг"
+                            input_filter: "float"
+                            font_size: "40dp"
+
+                        MDRaisedButton:
+                            text: "Рассчитать"
+                            size_hint: .9, .3
+                            pos_hint: {"center_x": .5}
+                            on_release:
+                                app.calculate()
+
+                        MDLabel:
+                            id: _lbl_bmi
+                            font_size: "20dp"
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+
+        MDNavigationDrawer:
+            id: _nav_drawer
+
+            ContentNavigationDrawer:
+                id: _content_drawer
+
+MainScreen:
