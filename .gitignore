@@ -1,0 +1,33 @@
+# Directories and files that cannot be commited to git
+
+# Byte-compiled
+__pycache__
+
+# Distribution / packaging
+bin_WORKING+++
+bin
+.buildozer
+
+# Logs
+*.log
+
+# Editors
+.idea
+.vscode
+
+# Environments
+venv
+.venv
+env
+.env
+
+#  Temp / Cache
+cache
+.cache
+temp
+.temp
+main.ini
+
+TmpTests
+dampers*.db
+
